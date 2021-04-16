@@ -91,6 +91,7 @@ select li.lec_id
       ,ifnull(llc.cnt,0) as cnt
       ,ifnull(llt.cnt,0) as lltcnt
       ,(ifnull(llc.cnt,0) - ifnull(llt.cnt,0)) as nocnt
+      //변수명은 선언된 곳에서는 바로 못쓰고 한번 감싼 부분 위에서 사용할수 있다.(상위 select 부분)
      -- ,(cnt - lltcnt) as nocnt
   from tb_test te
        inner join tb_lec_info li on te.lec_id = li.lec_id
