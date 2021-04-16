@@ -77,3 +77,32 @@ select eq.equ_id
       ,eq.equ_note
   from tb_equ eq
  where eq.lecrm_id = '1';
+
+-- 강의명   시험명   시험기간   상태   대상자 수   응시자 수   미응시자 수
+
+
+select li.lec_id
+      ,li.lec_name
+      ,te.test_name
+      ,concat(DATE_FORMAT(te.test_start, '%Y.%m.%d'),'-',DATE_FORMAT(te.test_end, '%Y.%m.%d')) as dduedate 
+      ,case when te.test_end < now() then '시험종료'
+           else '시험중'
+      end state 
+      ,ifnull(llc.cnt,0) as cnt
+      ,ifnull(llt.cnt,0) as lltcnt
+      ,(ifnull(llc.cnt,0) - ifnull(llt.cnt,0)) as nocnt
+     -- ,(cnt - lltcnt) as nocnt
+  from tb_test te
+       inner join tb_lec_info li on te.lec_id = li.lec_id
+       left outer join (
+                          select lc.lec_id, count(*) as cnt   
+                            from tb_lecstd_info lc
+                           group by lc.lec_id
+                       ) llc on li.lec_id = llc.lec_id
+       left outer join (
+                          select tu.test_id, count(*) as cnt   
+                            from tb_test_user tu
+                           group by tu.test_id
+                       ) llt on te.test_id = llt.test_id             
+                       
+                 
