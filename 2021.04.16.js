@@ -1,6 +1,7 @@
+//상담관리
 select lec_id, tutor_id ,lec_name, CONCAT(DATE_FORMAT(c_st, '%Y.%m.%d'),'~', DATE_FORMAT(c_end, '%Y.%m.%d')) as cdate
   from tb_lec_info
-  
+//강의목록
 select li.lec_id
      , li.tutor_id 
      , ui.name
